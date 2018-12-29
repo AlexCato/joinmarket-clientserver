@@ -15,7 +15,7 @@ from twisted.internet import reactor, task
 import jmbitcoin as btc
 
 from jmclient.jsonrpc import JsonRpcConnectionError, JsonRpcError
-from jmclient.configure import get_p2pk_vbyte, jm_single
+from jmclient.configure import get_p2pk_vbyte, jm_s/ingle
 from jmbase.support import get_log
 
 log = get_log()
@@ -306,7 +306,8 @@ class ElectrumWalletInterface(BlockchainInterface): #pragma: no cover
 
     def estimate_fee_per_kb(self, N):
         if super(ElectrumWalletInterface, self).fee_per_kb_has_been_manually_set(N):
-            return int(random.uniform(N * float(0.8), N * float(1.2)))
+	    # use a floor of 1000 to not run into node relay problems
+            return int(max(1000, random.uniform(N * float(0.8), N * float(1.2))))
         fee = self.wallet.network.synchronous_get(('blockchain.estimatefee', [N]
                                                   ))
         log.debug("Got fee: " + str(fee))
@@ -872,7 +873,8 @@ class BitcoinCoreInterface(BlockchainInterface):
 
     def estimate_fee_per_kb(self, N):
         if super(BitcoinCoreInterface, self).fee_per_kb_has_been_manually_set(N):
-            return int(random.uniform(N * float(0.8), N * float(1.2)))
+            # use a floor of 1000 to not run into node relay problems
+	    return int(max(1000, random.uniform(N * float(0.8), N * float(1.2))))
 
         # Special bitcoin core case: sometimes the highest priority
         # cannot be estimated in that case the 2nd highest priority
