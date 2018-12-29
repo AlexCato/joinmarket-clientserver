@@ -15,7 +15,7 @@ from twisted.internet import reactor, task
 import jmbitcoin as btc
 
 from jmclient.jsonrpc import JsonRpcConnectionError, JsonRpcError
-from jmclient.configure import get_p2pk_vbyte, jm_s/ingle
+from jmclient.configure import get_p2pk_vbyte, jm_single
 from jmbase.support import get_log
 
 log = get_log()
